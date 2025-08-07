@@ -1,0 +1,373 @@
+.analytics-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.analytics-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.header-nav {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.back-link {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border: 1px solid #667eea;
+  border-radius: 5px;
+  transition: all 0.3s;
+  display: inline-block;
+}
+
+.back-link:hover {
+  background: #667eea;
+  color: white;
+}
+
+.analytics-header h2 {
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.aggregation-note {
+  color: #666;
+  font-style: italic;
+  background: linear-gradient(135deg, #e3f2fd 0%, #f1f8e9 100%);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  display: inline-block;
+  border: 1px solid #e0e0e0;
+}
+
+.analytics-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #f0f0f0;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  background: #f8f9fa;
+}
+
+.tab.active {
+  border-bottom-color: #667eea;
+  color: #667eea;
+  background: #f8f9fa;
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.analytics-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border: 1px solid #e0e0e0;
+}
+
+.analytics-card h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.1rem;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 0.5rem;
+}
+
+.status-stats, .duration-stats, .participant-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.stat-item, .duration-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 5px;
+}
+
+.stat-label, .duration-status {
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.stat-value, .duration-time {
+  background: #667eea;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.duration-count {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.activity-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.activity-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 5px;
+  border-left: 3px solid #28a745;
+}
+
+.activity-date {
+  font-weight: 500;
+}
+
+.activity-count {
+  color: #28a745;
+  font-weight: 500;
+}
+
+.total-meetings {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #667eea;
+  margin-bottom: 1rem;
+  text-align: center;
+  background: #f8f9fa;
+  padding: 0.75rem;
+  border-radius: 8px;
+}
+
+.status-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.status-item {
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+}
+
+.status-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.status-name {
+  font-weight: 600;
+  text-transform: capitalize;
+  font-size: 1.1rem;
+}
+
+.status-count {
+  background: #667eea;
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.9rem;
+}
+
+.status-participants {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.monthly-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.month-item {
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #fd7e14;
+}
+
+.month-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.month-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.month-count {
+  background: #fd7e14;
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.9rem;
+}
+
+.month-meetings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.mini-meeting {
+  font-size: 0.85rem;
+  color: #555;
+  padding: 0.2rem 0.5rem;
+  background: white;
+  border-radius: 4px;
+}
+
+.more-meetings {
+  font-size: 0.8rem;
+  color: #888;
+  font-style: italic;
+  text-align: center;
+  padding: 0.2rem;
+}
+
+.participants-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.participant-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #20c997;
+}
+
+.participant-rank {
+  background: #20c997;
+  color: white;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.participant-info {
+  flex: 1;
+}
+
+.participant-email {
+  font-weight: 500;
+  color: #333;
+}
+
+.participant-meetings {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.metric:last-child {
+  border-bottom: none;
+}
+
+.metric-label {
+  color: #666;
+}
+
+.metric-value {
+  font-weight: bold;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.analytics-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.analytics-footer {
+  margin-top: 2rem;
+  text-align: center;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.analytics-footer small {
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .analytics-container {
+    padding: 1rem;
+  }
+  
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .analytics-tabs {
+    justify-content: flex-start;
+  }
+  
+  .stat-item, .duration-item, .activity-item {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .status-info, .month-header {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+}
