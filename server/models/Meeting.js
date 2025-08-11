@@ -7,6 +7,8 @@ const MeetingSchema = new mongoose.Schema({
   endTime: { type: Date, required: true },
   participants: [String], // List of emails
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  googleMeetLink: { type: String }, // Google Meet link
+  meetingId: { type: String, unique: true }, // Unique meeting ID for Google Meet
   remindersSent: {
     oneDayBefore: { type: Boolean, default: false },
     oneHourBefore: { type: Boolean, default: false },

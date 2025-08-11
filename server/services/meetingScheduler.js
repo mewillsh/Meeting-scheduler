@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 const Meeting = require('../models/Meeting');
-const sendReminderEmail = require('../utils/sendReminderEmail');
+const sendReminderEmail = require('../utils/sendReminderEmailWithMeet');
 
 class MeetingScheduler {
   constructor() {

@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const Meeting = require('../models/Meeting');
 const auth = require('../middleware/auth');
-const sendEmail = require('../utils/sendEmail');
+const sendEmail = require('../utils/sendEmailWithMeet');
+const googleMeet = require('../utils/googleMeet');
 const meetingScheduler = require('../services/meetingScheduler');
 
 // Create a new meeting
@@ -22,7 +23,8 @@ router.post('/', auth, async (req, res) => {
       return res.status(400).json({ error: 'Meeting end time must be after start time' });
     }
 
-    const meeting = await Meeting.create({
+    // Generate Google Meet setup
+    const meetingSetup = googleMeet.createMeetingSetup({
       title,
       description,
       startTime,
@@ -31,17 +33,28 @@ router.post('/', auth, async (req, res) => {
       createdBy: req.user.id
     });
 
-    // Send initial email invites
+    const meeting = await Meeting.create({
+      title,
+      description,
+      startTime,
+      endTime,
+      participants,
+      createdBy: req.user.id,
+      googleMeetLink: meetingSetup.googleMeetLink,
+      meetingId: meetingSetup.meetingId
+    });
+
+    // Send initial email invites with Google Meet link
     await sendEmail(participants, meeting);
 
     // Schedule automatic reminders
     meetingScheduler.scheduleReminderForMeeting(meeting);
 
-    console.log(`✅ Meeting "${title}" created with automatic reminders scheduled`);
+    console.log(`✅ Meeting "${title}" created with Google Meet link: ${meetingSetup.googleMeetLink}`);
 
     res.status(201).json({
       ...meeting.toObject(),
-      message: 'Meeting created successfully with automatic reminders scheduled'
+      message: 'Meeting created successfully with Google Meet link and automatic reminders scheduled'
     });
   } catch (err) {
     console.error(err);
@@ -88,6 +101,77 @@ router.patch('/:id/status', auth, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to update meeting status' });
+  }
+});
+
+// Regenerate Google Meet link for a meeting
+router.patch('/:id/regenerate-meet', auth, async (req, res) => {
+  try {
+    const meeting = await Meeting.findOne({
+      _id: req.params.id,
+      createdBy: req.user.id
+    });
+
+    if (!meeting) {
+      return res.status(404).json({ error: 'Meeting not found or unauthorized' });
+    }
+
+    // Generate new Google Meet setup
+    const newMeetingSetup = googleMeet.createMeetingSetup(meeting);
+
+    // Update meeting with new Google Meet details
+    const updatedMeeting = await Meeting.findByIdAndUpdate(
+      meeting._id,
+      {
+        googleMeetLink: newMeetingSetup.googleMeetLink,
+        meetingId: newMeetingSetup.meetingId
+      },
+      { new: true }
+    );
+
+    console.log(`🔄 Google Meet link regenerated for meeting: ${meeting.title}`);
+
+    res.json({
+      ...updatedMeeting.toObject(),
+      message: 'Google Meet link regenerated successfully'
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to regenerate Google Meet link' });
+  }
+});
+
+// Get Google Meet details for a specific meeting
+router.get('/:id/meet-details', auth, async (req, res) => {
+  try {
+    const meeting = await Meeting.findOne({
+      _id: req.params.id,
+      $or: [
+        { createdBy: req.user.id },
+        { participants: { $in: [req.user.email] } } // Allow participants to access
+      ]
+    });
+
+    if (!meeting) {
+      return res.status(404).json({ error: 'Meeting not found or unauthorized' });
+    }
+
+    const calendarUrl = googleMeet.generateCalendarEventUrl(meeting);
+
+    res.json({
+      meetingId: meeting.meetingId,
+      googleMeetLink: meeting.googleMeetLink,
+      calendarUrl: calendarUrl,
+      meetingDetails: {
+        title: meeting.title,
+        startTime: meeting.startTime,
+        endTime: meeting.endTime,
+        description: meeting.description
+      }
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch meeting details' });
   }
 });
 
