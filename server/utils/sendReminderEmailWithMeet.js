@@ -1,13 +1,22 @@
 const nodemailer = require('nodemailer');
 const googleMeet = require('./googleMeet');
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-});
+// Check if email credentials are available
+const emailCredentialsAvailable = process.env.EMAIL_USER && process.env.EMAIL_PASS;
+
+let transporter = null;
+
+if (emailCredentialsAvailable) {
+  transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+  });
+} else {
+  console.warn('⚠️ Email credentials not found. Reminder emails will be disabled.');
+}
 
 const formatTimeRemaining = (timeType) => {
   switch(timeType) {
@@ -118,6 +127,12 @@ const generateReminderHtml = (meeting, timeType) => {
 };
 
 module.exports = async function sendReminderEmail(recipients, meeting, timeType) {
+  // Skip email sending if credentials are not available
+  if (!emailCredentialsAvailable || !transporter) {
+    console.log(`📧 Reminder email skipped for "${meeting.title}" - credentials not configured`);
+    return;
+  }
+
   try {
     const subject = generateReminderSubject(meeting, timeType);
     const text = generateReminderBody(meeting, timeType);
@@ -135,6 +150,7 @@ module.exports = async function sendReminderEmail(recipients, meeting, timeType)
     console.log(`✅ Reminder email sent for meeting "${meeting.title}" (${timeType})`);
   } catch (error) {
     console.error(`❌ Failed to send reminder email for meeting "${meeting.title}":`, error.message);
-    throw error;
+    // Don't throw error to prevent server crash
+    console.log('📧 Reminder email failed but continuing operation');
   }
 };
